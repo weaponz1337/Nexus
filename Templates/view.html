@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Seeker Tool</title>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Tools</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-card w3-white w3-round-large w3-margin-top w3-padding">
+        <h2>Nexus Control Systems – Tools</h2>
+        <p>Select a tool below:</p>
+
+        <div class="w3-bar w3-margin-top">
+            <a href="/" class="w3-bar-item w3-button w3-green w3-round-large w3-margin-right">Home</a>
+	   
+            <a href="/applications" class="w3-bar-item w3-button w3-green w3-round-large w3-margin-right">Add New Application</a>
+            <a href="/citation" class="w3-bar-item w3-button w3-teal w3-round-large">APA Citation Tool</a>
+        </div>
+    </div>
+
+
+    <h1>Welcome, Job Seeker!</h1>
+    <p>Current apps completed</p>
+
+    <p>
+<table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Company</th>
+            <th>Role</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>Applied Date</th>
+            <th>Notes</th>
+        </tr>
+        {% for app in applications %}
+        <tr>
+            <td>{{ app[0] }}</td>
+            <td>{{ app[1] }}</td>
+            <td>{{ app[2] }}</td>
+            <td>{{ app[3] }}</td>
+            <td>{{ app[4] }}</td>
+            <td>{{ app[5] }}</td>
+            <td>{{ app[6] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+      
+    </p> 
+</body>
+</html>

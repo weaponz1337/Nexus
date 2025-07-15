@@ -1,53 +1,92 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Job Seeker Tool</title>
-<meta charset="UTF-8">
+    <title>View Job Applications</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Tools</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
-<body>
-<div class="w3-card w3-white w3-round-large w3-margin-top w3-padding">
+<body class="w3-light-grey">
+    <div class="w3-card w3-white w3-round-large w3-margin-top w3-padding">
         <h2>Nexus Control Systems – Tools</h2>
         <p>Select a tool below:</p>
 
         <div class="w3-bar w3-margin-top">
             <a href="/" class="w3-bar-item w3-button w3-green w3-round-large w3-margin-right">Home</a>
-	   
-            <a href="/applications" class="w3-bar-item w3-button w3-green w3-round-large w3-margin-right">Add New Application</a>
-            <a href="/citation" class="w3-bar-item w3-button w3-teal w3-round-large">APA Citation Tool</a>
+            <a href="/add" class="w3-bar-item w3-button w3-green w3-round-large w3-margin-right">Add New Application</a>
+            <a href="/citation" class="w3-bar-item w3-button w3-teal w3-round-large w3-margin-right">APA Citation Tool</a>
+            <a href="/tools" class="w3-bar-item w3-button w3-orange w3-round-large">Tools Home</a>
         </div>
     </div>
 
+    <div class="w3-container w3-margin-top">
+        <h1>Your Job Applications</h1>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="w3-panel {% if category == 'success' %}w3-green{% else %}w3-red{% endif %} w3-round-large">
+                        <p>{{ message }}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        {% if error %}
+            <div class="w3-panel w3-red w3-round-large">
+                <p>{{ error }}</p>
+            </div>
+        {% endif %}
 
-    <h1>Welcome, Job Seeker!</h1>
-    <p>Current apps completed</p>
-
-    <p>
-<table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Company</th>
-            <th>Role</th>
-            <th>Location</th>
-            <th>Status</th>
-            <th>Applied Date</th>
-            <th>Notes</th>
-        </tr>
-        {% for app in applications %}
-        <tr>
-            <td>{{ app[0] }}</td>
-            <td>{{ app[1] }}</td>
-            <td>{{ app[2] }}</td>
-            <td>{{ app[3] }}</td>
-            <td>{{ app[4] }}</td>
-            <td>{{ app[5] }}</td>
-            <td>{{ app[6] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-      
-    </p> 
+        {% if applications %}
+            <div class="w3-card w3-white w3-margin-top">
+                <div class="w3-container w3-padding">
+                    <p>You have {{ applications|length }} application(s) tracked.</p>
+                </div>
+                
+                <table class="w3-table-all w3-hoverable">
+                    <thead>
+                        <tr class="w3-light-grey">
+                            <th>ID</th>
+                            <th>Company</th>
+                            <th>Role</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Applied Date</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for app in applications %}
+                        <tr>
+                            <td>{{ app[0] }}</td>
+                            <td><strong>{{ app[1] }}</strong></td>
+                            <td>{{ app[2] }}</td>
+                            <td>{{ app[3] or 'N/A' }}</td>
+                            <td>
+                                <span class="w3-tag 
+                                    {% if app[4] == 'Applied' %}w3-blue
+                                    {% elif app[4] == 'Interview' %}w3-orange
+                                    {% elif app[4] == 'Offer' %}w3-green
+                                    {% elif app[4] == 'Rejected' %}w3-red
+                                    {% else %}w3-grey{% endif %}">
+                                    {{ app[4] }}
+                                </span>
+                            </td>
+                            <td>{{ app[5] or 'N/A' }}</td>
+                            <td>{{ app[6][:50] + '...' if app[6] and app[6]|length > 50 else (app[6] or 'N/A') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="w3-card w3-white w3-padding w3-margin-top w3-center">
+                <h3>No Applications Yet</h3>
+                <p>You haven't added any job applications yet.</p>
+                <a href="/add" class="w3-button w3-green w3-round-large">Add Your First Application</a>
+            </div>
+        {% endif %}
+    </div>
 </body>
 </html>

@@ -1,10 +1,34 @@
 import sqlite3
-from flask import Flask, render_template, redirect, request
+import os
+from flask import Flask, render_template, redirect, request, flash
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 import requests
 
 app = Flask(__name__)
+app.secret_key = os.environ.get('SECRET_KEY', 'dev-key-change-in-production')
+
+# Database configuration
+DATABASE = 'data.db'
+
+def init_db():
+    """Initialize database if it doesn't exist"""
+    if not os.path.exists(DATABASE):
+        conn = sqlite3.connect(DATABASE)
+        conn.execute('''CREATE TABLE applications (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            company TEXT NOT NULL,
+            role TEXT NOT NULL,
+            location TEXT,
+            status TEXT DEFAULT 'Applied',
+            applied_date TEXT,
+            notes TEXT
+        )''')
+        conn.commit()
+        conn.close()
+
+# Initialize database on startup
+init_db()
 
 @app.route("/")
 def _index():
@@ -32,27 +56,36 @@ def add_application():
         notes = request.form["notes"]
 
 
+        # Validate required fields
+        if not company or not role:
+            return render_template("add.html", error="Company and Role are required fields")
+        
         # Insert into DB
-        conn = sqlite3.connect("data.db")
-        c = conn.cursor()
-        c.execute( "INSERT INTO applications (company, role, location, status, applied_date, notes) VALUES (?,?,?,?,?,?)"
-        (company, role, location, status, applied_date, notes)            
-        )
-        conn.commit()
-        conn.close()
-
-
+        try:
+            conn = sqlite3.connect(DATABASE)
+            c = conn.cursor()
+            c.execute("INSERT INTO applications (company, role, location, status, applied_date, notes) VALUES (?,?,?,?,?,?)",
+                     (company, role, location, status, applied_date, notes))
+            conn.commit()
+            conn.close()
+            flash("Application added successfully!", "success")
+            return redirect("/view")  # Redirect after successful submission
+        except Exception as e:
+            return render_template("add.html", error=f"Database error: {str(e)}")
 
     return render_template("add.html")
 
 @app.route("/view")
 def view_application():
-    conn = sqlite3.connect("data.db")
-    c = conn.cursor()
-    c.execute("SELECT * FROM applications")
-    rows = c.fetchall()
-    conn.close
-    return render_template("view.html", applications=rows)
+    try:
+        conn = sqlite3.connect(DATABASE)
+        c = conn.cursor()
+        c.execute("SELECT * FROM applications ORDER BY id DESC")
+        rows = c.fetchall()
+        conn.close()  # Fixed missing parentheses
+        return render_template("view.html", applications=rows)
+    except Exception as e:
+        return render_template("view.html", applications=[], error=f"Database error: {str(e)}")
 
 @app.route("/citation", methods=["GET", "POST"])
 def citation():
@@ -69,3 +102,6 @@ def citation():
             citation_text = f"Error: {e}"
 
     return render_template("citation.html", citation=citation_text)
+
+if __name__ == "__main__":
+    app.run(debug=True)

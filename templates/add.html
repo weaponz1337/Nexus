@@ -1,15 +1,68 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Submitted</title>
+    <title>Add Job Application</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 <body>
-    <h1> Application Submitted </h1>
+    <div class="w3-card w3-white w3-round-large w3-margin-top w3-padding">
+        <h2>Nexus Control Systems – Tools</h2>
+        <p>Select a tool below:</p>
 
-<p >
-Data sumbitted
-</p>
+        <div class="w3-bar w3-margin-top">
+            <a href="/" class="w3-bar-item w3-button w3-green w3-round-large w3-margin-right">Home</a>
+            <a href="/view" class="w3-bar-item w3-button w3-blue w3-round-large w3-margin-right">View Applications</a>
+            <a href="/citation" class="w3-bar-item w3-button w3-teal w3-round-large w3-margin-right">APA Citation Tool</a>
+            <a href="/tools" class="w3-bar-item w3-button w3-orange w3-round-large">Tools Home</a>
+        </div>
+    </div>
 
+    <div class="w3-container w3-margin-top">
+        <h1>Add New Job Application</h1>
+        
+        {% if error %}
+            <div class="w3-panel w3-red w3-round-large">
+                <p>{{ error }}</p>
+            </div>
+        {% endif %}
+
+        <form method="POST" class="w3-container w3-card w3-white w3-padding">
+            <p>
+                <label for="company">Company *</label>
+                <input class="w3-input w3-border" type="text" name="company" id="company" required>
+            </p>
+            <p>
+                <label for="role">Role *</label>
+                <input class="w3-input w3-border" type="text" name="role" id="role" required>
+            </p>
+            <p>
+                <label for="location">Location</label>
+                <input class="w3-input w3-border" type="text" name="location" id="location">
+            </p>
+            <p>
+                <label for="status">Status</label>
+                <select class="w3-select w3-border" name="status" id="status">
+                    <option value="Applied">Applied</option>
+                    <option value="Interview">Interview</option>
+                    <option value="Offer">Offer</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+            </p>
+            <p>
+                <label for="applied_date">Applied Date</label>
+                <input class="w3-input w3-border" type="date" name="applied_date" id="applied_date">
+            </p>
+            <p>
+                <label for="notes">Notes</label>
+                <textarea class="w3-input w3-border" name="notes" id="notes" rows="4"></textarea>
+            </p>
+            <p>
+                <button class="w3-button w3-green w3-round-large" type="submit">Add Application</button>
+            </p>
+        </form>
+    </div>
 </body>
 </html>
 

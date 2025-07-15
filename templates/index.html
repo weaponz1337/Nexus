@@ -1,43 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Job Seeker Tool</title>
- <meta charset="UTF-8">
+    <title>Job Application Tracker</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Tools</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
-<body>
-<div class="w3-card w3-white w3-round-large w3-margin-top w3-padding">
+<body class="w3-light-grey">
+    <div class="w3-card w3-white w3-round-large w3-margin-top w3-padding">
         <h2>Nexus Control Systems – Tools</h2>
         <p>Select a tool below:</p>
 
         <div class="w3-bar w3-margin-top">
-        <a href="/" class="w3-bar-item w3-button w3-green w3-round-large w3-margin-right">Home</a>    
-	<a href="/view" class="w3-bar-item w3-button w3-blue w3-round-large w3-margin-right">View Applications</a>
-            
-            <a href="/citation" class="w3-bar-item w3-button w3-teal w3-round-large">APA Citation Tool</a>
+            <a href="/" class="w3-bar-item w3-button w3-green w3-round-large w3-margin-right">Home</a>    
+            <a href="/view" class="w3-bar-item w3-button w3-blue w3-round-large w3-margin-right">View Applications</a>
+            <a href="/citation" class="w3-bar-item w3-button w3-teal w3-round-large w3-margin-right">APA Citation Tool</a>
+            <a href="/tools" class="w3-bar-item w3-button w3-orange w3-round-large">Tools Home</a>
         </div>
     </div>   
- <h1>Welcome, Job Seeker!</h1>
-    <p>Your tools will appear here.</p>
 
-    <p>
-      <form method="POST" action="{{ url_for('add_application') }}" >
-    Company: <input type="text" name="company"  ><br>
-    Role: <input type="text" name="role"><br>
-    Location: <input type="text" name="location"><br>
-    Status:
-    <select name="status">
-        <option>Applied</option>
-        <option>Interview</option>
-        <option>Offer</option>
-        <option>Rejected</option>
-    </select><br>
-    Applied Date: <input type="date" name="applied_date"><br>
-    Notes: <textarea name="notes"></textarea><br>
-    <input type="submit" value="Add Application">
-</form> 
-    </p>
+    <div class="w3-container w3-margin-top">
+        <h1>Welcome, Job Seeker!</h1>
+        <p>Track your job applications with our simple tool.</p>
+
+        <div class="w3-card w3-white w3-padding w3-margin-top">
+            <h3>Quick Actions</h3>
+            <div class="w3-bar">
+                <a href="/add" class="w3-bar-item w3-button w3-green w3-round-large w3-margin-right">
+                    <i class="w3-margin-right">+</i>Add New Application
+                </a>
+                <a href="/view" class="w3-bar-item w3-button w3-blue w3-round-large">
+                    <i class="w3-margin-right">📋</i>View All Applications
+                </a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

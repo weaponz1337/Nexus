@@ -3,103 +3,330 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Veteran-owned industrial automation firm delivering custom control systems and integration services.">
-  <title>Nexus Control Systems</title>
+  <meta name="description" content="Veteran-owned industrial automation firm delivering custom control systems and integration services in Kentucky.">
+  <meta name="keywords" content="industrial automation, control systems, PLC programming, SCADA, system integration, Kentucky">
+  <meta name="author" content="Nexus Control Systems">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Nexus Control Systems - Industrial Automation & Control Engineering">
+  <meta property="og:description" content="Veteran-owned industrial automation firm delivering custom control systems and integration services.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nexuscontrolsystems.com">
+  
+  <title>Nexus Control Systems - Industrial Automation & Control Engineering</title>
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <style>
-    body { font-family: Arial, sans-serif; }
-    .hero {
-      background: url('https://mondrelog.com/wp-content/uploads/2022/07/digital-cyberspace-with-particles-digital-data-network-connections.jpg') no-repeat center center / cover;
-      color: white; padding: 80px 20px; text-align: center;
+    html { scroll-behavior: smooth; }
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      line-height: 1.6;
     }
-    .responsive-video {
-      width: 100%; height: 400px; border: none;
+    .hero {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white; 
+      padding: 100px 20px; 
+      text-align: center;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+      opacity: 0.3;
+    }
+    .hero > * { position: relative; z-index: 1; }
+    .service-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    .btn-primary {
+      background-color: #2a5298;
+      border: none;
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+      background-color: #1e3c72;
+      transform: translateY(-2px);
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #2a5298;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      display: none;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+    .back-to-top:hover {
+      background: #1e3c72;
+      transform: scale(1.1);
+    }
+    .navbar-mobile {
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .navbar-desktop { display: none; }
+      .navbar-mobile { display: block; }
+      .hero { padding: 60px 20px; }
+    }
+    .section-padding { padding: 80px 0; }
+    .contact-info a {
+      color: #2a5298;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .contact-info a:hover {
+      color: #1e3c72;
     }
   </style>
 </head>
 <body>
 
   <!-- Navigation Bar -->
-  <div class="w3-bar w3-black w3-mobile">
-    <a href="/" class="w3-bar-item w3-button">Home</a>
+  <nav class="w3-bar w3-black w3-mobile navbar-desktop" role="navigation" aria-label="Main navigation">
+    <a href="/" class="w3-bar-item w3-button" aria-current="page">Home</a>
+    <a href="#about" class="w3-bar-item w3-button">About</a>
     <a href="#services" class="w3-bar-item w3-button">Services</a>
     <a href="#contact" class="w3-bar-item w3-button">Contact</a>
     <a href="/tools" class="w3-bar-item w3-button">Tools</a>
-  </div>
+  </nav>
+  
+  <!-- Mobile Navigation -->
+  <nav class="w3-bar w3-black navbar-mobile" role="navigation" aria-label="Mobile navigation">
+    <button class="w3-bar-item w3-button w3-right" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu">☰</button>
+    <a href="/" class="w3-bar-item w3-button">Nexus Control</a>
+    <div id="mobile-menu" class="w3-bar-block w3-hide">
+      <a href="/" class="w3-bar-item w3-button" aria-current="page">Home</a>
+      <a href="#about" class="w3-bar-item w3-button" onclick="toggleMobileMenu()">About</a>
+      <a href="#services" class="w3-bar-item w3-button" onclick="toggleMobileMenu()">Services</a>
+      <a href="#contact" class="w3-bar-item w3-button" onclick="toggleMobileMenu()">Contact</a>
+      <a href="/tools" class="w3-bar-item w3-button" onclick="toggleMobileMenu()">Tools</a>
+    </div>
+  </nav>
 
   <!-- Hero Section -->
-  <header class="hero w3-dark-orange">
-    <h1>Welcome to Nexus Control Systems</h1>
-    <p>Innovating Automation & Control Engineering</p>
-    <a href="#services" class="w3-button w3-orange w3-margin-top">Explore Our Services</a>
+  <header class="hero">
+    <h1 class="w3-jumbo w3-margin-bottom">Nexus Control Systems</h1>
+    <p class="w3-xlarge w3-margin-bottom">Veteran-Owned Industrial Automation & Control Engineering</p>
+    <p class="w3-large w3-opacity">Delivering precision, reliability, and innovation in every project</p>
+    <a href="#services" class="w3-button btn-primary w3-large w3-margin-top w3-round" aria-label="Learn about our services">Explore Our Services</a>
   </header>
 
-  <!-- Services Section -->
-  <section class="w3-container w3-padding-64" id="services">
-    <h2 class="w3-center">Our Services</h2>
-    <div class="w3-row-padding">
-      <div class="w3-col s12 m6">
-        <img src="https://blog.norcalcontrols.net/hubfs/automation%20concept.jpg" alt="Automation Services" style="width:100%;">
-      </div>
-      <div class="w3-col s12 m6">
-        <ul class="w3-ul w3-card-4">
-          <li><strong>Custom Control Design:</strong> Tailored systems for your operational needs.</li>
-          <li><strong>Automation Solutions:</strong> Boosting productivity through smart automation.</li>
-          <li><strong>System Integration:</strong> Seamlessly connect legacy and modern systems.</li>
-          <li><strong>Ongoing Support:</strong> Reliable maintenance and monitoring.</li>
-        </ul>
+  <!-- About Section -->
+  <section class="w3-container section-padding w3-white" id="about">
+    <div class="w3-content">
+      <h2 class="w3-center w3-text-dark-grey w3-margin-bottom">About Nexus Control Systems</h2>
+      <div class="w3-row-padding">
+        <div class="w3-col l6 m12">
+          <p class="w3-large w3-text-grey">
+            As a veteran-owned industrial automation firm, we bring military precision and reliability to every project. 
+            Our expertise spans custom control systems, PLC programming, SCADA development, and seamless system integration.
+          </p>
+          <p class="w3-text-grey">
+            Located in Shepherdsville, Kentucky, we serve clients across the region with cutting-edge automation solutions 
+            that enhance productivity, reduce downtime, and optimize operational efficiency.
+          </p>
+        </div>
+        <div class="w3-col l6 m12">
+          <div class="w3-card-4 w3-light-grey w3-padding">
+            <h3 class="w3-text-dark-grey">Why Choose Us?</h3>
+            <ul class="w3-ul">
+              <li>✓ Veteran-owned and operated</li>
+              <li>✓ 15+ years of industry experience</li>
+              <li>✓ Custom solutions tailored to your needs</li>
+              <li>✓ 24/7 support and maintenance</li>
+              <li>✓ Competitive pricing and fast delivery</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Testimonials -->
-  <section class="w3-container w3-light-grey w3-padding-64">
-    <h2 class="w3-center">What Our Clients Say</h2>
-    <div class="w3-row-padding w3-center">
-      <div class="w3-third">
-        <p class="w3-large"></p>
-      </div>
-      <div class="w3-third">
-        <p class="w3-large"></p>
-      </div>
-      <div class="w3-third">
-        <p class="w3-large"></p>
+  <!-- Services Section -->
+  <section class="w3-container section-padding w3-light-grey" id="services">
+    <div class="w3-content">
+      <h2 class="w3-center w3-text-dark-grey w3-margin-bottom">Our Services</h2>
+      <div class="w3-row-padding w3-margin-top">
+        <div class="w3-col l3 m6 s12 w3-margin-bottom">
+          <div class="w3-card-4 w3-white service-card w3-padding">
+            <div class="w3-center">
+              <h3 class="w3-text-dark-grey">Custom Control Design</h3>
+              <p>Tailored PLC and control system solutions designed specifically for your operational requirements and industry standards.</p>
+            </div>
+          </div>
+        </div>
+        <div class="w3-col l3 m6 s12 w3-margin-bottom">
+          <div class="w3-card-4 w3-white service-card w3-padding">
+            <div class="w3-center">
+              <h3 class="w3-text-dark-grey">Automation Solutions</h3>
+              <p>Smart automation systems that boost productivity, reduce manual labor, and minimize human error in your processes.</p>
+            </div>
+          </div>
+        </div>
+        <div class="w3-col l3 m6 s12 w3-margin-bottom">
+          <div class="w3-card-4 w3-white service-card w3-padding">
+            <div class="w3-center">
+              <h3 class="w3-text-dark-grey">System Integration</h3>
+              <p>Seamlessly connect legacy equipment with modern systems, ensuring compatibility and optimal performance.</p>
+            </div>
+          </div>
+        </div>
+        <div class="w3-col l3 m6 s12 w3-margin-bottom">
+          <div class="w3-card-4 w3-white service-card w3-padding">
+            <div class="w3-center">
+              <h3 class="w3-text-dark-grey">Support & Maintenance</h3>
+              <p>Comprehensive ongoing support, preventive maintenance, and 24/7 monitoring to keep your systems running smoothly.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Contact Section -->
-  <section class="w3-container w3-padding-64 w3-light-grey" id="contact">
-    <h2 class="w3-center">Contact Us</h2>
-    <form action="https://formsubmit.co/chris.lynch@nexuscontrolsystems.com" method="POST" class="w3-container w3-card-4 w3-white w3-padding">
-      <p>
-        <label for="name">Name</label>
-        <input class="w3-input" type="text" name="name" id="name" required>
-      </p>
-      <p>
-        <label for="email">Email</label>
-        <input class="w3-input" type="email" name="email" id="email" required>
-      </p>
-      <p>
-        <label for="message">Message</label>
-        <textarea class="w3-input" name="message" id="message" required></textarea>
-      </p>
-      <p>
-        <button class="w3-button w3-dark-grey" type="submit">Send Message</button>
-      </p>
-    </form>
-    <p class="w3-center">
-      <strong>Email:</strong> <a href="mailto:chris.lynch@nexuscontrolsystems.com">chris.lynch@nexuscontrolsystems.com</a><br>
-      <strong>Phone:</strong> <a href="tel:8025586356">802-558-6356</a><br>
-      <strong>Location:</strong> <a href="https://maps.google.com/?q=Shepherdsville+KY+40165" target="_blank">Shepherdsville, KY</a>
-    </p>
+  <section class="w3-container section-padding w3-white" id="contact">
+    <div class="w3-content">
+      <h2 class="w3-center w3-text-dark-grey w3-margin-bottom">Get In Touch</h2>
+      <div class="w3-row-padding">
+        <div class="w3-col l6 m12">
+          <form action="https://formsubmit.co/chris.lynch@nexuscontrolsystems.com" method="POST" class="w3-card-4 w3-light-grey w3-padding" aria-label="Contact form">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_next" value="https://nexuscontrolsystems.com/thank-you">
+            <input type="text" name="_honey" style="display:none">
+            
+            <div class="w3-margin-bottom">
+              <label for="name" class="w3-text-dark-grey">Name *</label>
+              <input class="w3-input w3-border w3-round" type="text" name="name" id="name" required aria-required="true">
+            </div>
+            
+            <div class="w3-margin-bottom">
+              <label for="email" class="w3-text-dark-grey">Email *</label>
+              <input class="w3-input w3-border w3-round" type="email" name="email" id="email" required aria-required="true">
+            </div>
+            
+            <div class="w3-margin-bottom">
+              <label for="company" class="w3-text-dark-grey">Company</label>
+              <input class="w3-input w3-border w3-round" type="text" name="company" id="company">
+            </div>
+            
+            <div class="w3-margin-bottom">
+              <label for="message" class="w3-text-dark-grey">Message *</label>
+              <textarea class="w3-input w3-border w3-round" name="message" id="message" rows="5" required aria-required="true" placeholder="Tell us about your automation needs..."></textarea>
+            </div>
+            
+            <button class="w3-button btn-primary w3-round w3-large" type="submit">Send Message</button>
+          </form>
+        </div>
+        
+        <div class="w3-col l6 m12">
+          <div class="w3-padding-large">
+            <h3 class="w3-text-dark-grey">Contact Information</h3>
+            <div class="contact-info w3-margin-top">
+              <p class="w3-large">
+                <strong>📧 Email:</strong><br>
+                <a href="mailto:chris.lynch@nexuscontrolsystems.com">chris.lynch@nexuscontrolsystems.com</a>
+              </p>
+              
+              <p class="w3-large">
+                <strong>📞 Phone:</strong><br>
+                <a href="tel:8025586356">(802) 558-6356</a>
+              </p>
+              
+              <p class="w3-large">
+                <strong>📍 Location:</strong><br>
+                <a href="https://maps.google.com/?q=Shepherdsville+KY+40165" target="_blank" rel="noopener">Shepherdsville, KY 40165</a>
+              </p>
+              
+              <p class="w3-large">
+                <strong>🕒 Business Hours:</strong><br>
+                Monday - Friday: 8:00 AM - 6:00 PM EST<br>
+                Emergency Support: 24/7
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- Footer -->
-  <footer class="w3-center w3-padding-32 w3-dark-grey">
-    <p>&copy; 2025 Nexus Control Systems • <a href="https://www.linkedin.com/in/chris-lynch-64570599/" target="_blank">LinkedIn</a> • <a href="https://github.com/weaponz1337" target="_blank">GitHub</a></p>
+  <footer class="w3-center w3-padding-32 w3-dark-grey w3-text-white">
+    <div class="w3-content">
+      <div class="w3-row-padding w3-margin-bottom">
+        <div class="w3-col l4 m12">
+          <h4>Nexus Control Systems</h4>
+          <p class="w3-opacity">Veteran-owned industrial automation excellence</p>
+        </div>
+        <div class="w3-col l4 m12">
+          <h4>Quick Links</h4>
+          <p><a href="#about" class="w3-text-light-grey w3-hover-text-white">About Us</a></p>
+          <p><a href="#services" class="w3-text-light-grey w3-hover-text-white">Services</a></p>
+          <p><a href="/tools" class="w3-text-light-grey w3-hover-text-white">Tools</a></p>
+        </div>
+        <div class="w3-col l4 m12">
+          <h4>Connect With Us</h4>
+          <p>
+            <a href="https://www.linkedin.com/in/chris-lynch-64570599/" target="_blank" rel="noopener" class="w3-text-light-grey w3-hover-text-white" aria-label="Visit our LinkedIn profile">LinkedIn</a> • 
+            <a href="https://github.com/weaponz1337" target="_blank" rel="noopener" class="w3-text-light-grey w3-hover-text-white" aria-label="Visit our GitHub profile">GitHub</a>
+          </p>
+        </div>
+      </div>
+      <hr class="w3-border-grey w3-margin-top">
+      <p class="w3-small">&copy; 2025 Nexus Control Systems. All rights reserved. | Shepherdsville, KY</p>
+    </div>
   </footer>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" onclick="scrollToTop()" aria-label="Back to top" title="Back to top">↑</button>
+
+  <script>
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('w3-hide');
+    }
+
+    // Back to top functionality
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Show/hide back to top button
+    window.addEventListener('scroll', function() {
+      const backToTop = document.querySelector('.back-to-top');
+      if (window.pageYOffset > 300) {
+        backToTop.style.display = 'block';
+      } else {
+        backToTop.style.display = 'none';
+      }
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+      const menu = document.getElementById('mobile-menu');
+      const button = event.target.closest('button');
+      
+      if (!button && !menu.contains(event.target)) {
+        menu.classList.add('w3-hide');
+      }
+    });
+  </script>
 
 </body>
 </html>

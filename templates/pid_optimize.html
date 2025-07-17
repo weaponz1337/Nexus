@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PID Auto-Tuning - Nexus Control Systems</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        .parameter-input { margin-bottom: 15px; }
+        .results-section { margin-top: 30px; }
+        .metric-card { margin: 10px 0; }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<div class="w3-card w3-white w3-round-large w3-margin-top w3-padding">
+    <h2>Nexus Control Systems – PID Auto-Tuning</h2>
+    <div class="w3-bar w3-margin-top">
+        <a href="/" class="w3-bar-item w3-button w3-green w3-round-large w3-margin-right">Home</a>
+        <a href="/view" class="w3-bar-item w3-button w3-blue w3-round-large w3-margin-right">View Applications</a>
+        <a href="/applications" class="w3-bar-item w3-button w3-green w3-round-large w3-margin-right">Add New Application</a>
+        <a href="/tools" class="w3-bar-item w3-button w3-teal w3-round-large w3-margin-right">Tools Home</a>
+        <a href="/pid" class="w3-bar-item w3-button w3-purple w3-round-large">Manual Tune</a>
+    </div>
+</div>
+
+<!-- Error Display -->
+{% if error %}
+<div class="w3-panel w3-red w3-round-large w3-margin-top">
+    <h3>Error</h3>
+    <p>{{ error }}</p>
+</div>
+{% endif %}
+
+<!-- Auto-Tuning Form -->
+<div class="w3-container w3-card w3-white w3-round-large w3-margin-top">
+    <h3>Automatic PID Parameter Optimization</h3>
+    <p>Set your performance targets and parameter bounds. The optimizer will find the best PID values.</p>
+    
+    <form action="/pid/optimize" method="post" class="w3-container">
+        <!-- Performance Targets -->
+        <h4 class="w3-text-blue">Performance Targets</h4>
+        <div class="w3-row-padding">
+            <div class="w3-col l4 m6 s12 parameter-input">
+                <label for="max_settling_time" class="w3-text-dark-grey"><b>Max Settling Time (s):</b></label>
+                <input class="w3-input w3-border w3-round" type="number" step="0.1" id="max_settling_time" name="max_settling_time" 
+                       value="{{ request.form.max_settling_time if request.form.max_settling_time else '10.0' }}" required>
+                <small class="w3-text-grey">Target maximum time to reach steady state</small>
+            </div>
+            
+            <div class="w3-col l4 m6 s12 parameter-input">
+                <label for="max_overshoot" class="w3-text-dark-grey"><b>Max Overshoot (%):</b></label>
+                <input class="w3-input w3-border w3-round" type="number" step="0.1" id="max_overshoot" name="max_overshoot" 
+                       value="{{ request.form.max_overshoot if request.form.max_overshoot else '5.0' }}" required>
+                <small class="w3-text-grey">Maximum acceptable overshoot percentage</small>
+            </div>
+            
+            <div class="w3-col l4 m6 s12 parameter-input">
+                <label for="max_steady_error" class="w3-text-dark-grey"><b>Max Steady State Error:</b></label>
+                <input class="w3-input w3-border w3-round" type="number" step="0.01" id="max_steady_error" name="max_steady_error" 
+                       value="{{ request.form.max_steady_error if request.form.max_steady_error else '1.0' }}" required>
+                <small class="w3-text-grey">Maximum acceptable steady state error</small>
+            </div>
+        </div>
+        
+        <!-- Parameter Bounds -->
+        <h4 class="w3-text-green">Parameter Search Bounds</h4>
+        <div class="w3-row-padding">
+            <div class="w3-col l6 m12 s12">
+                <h5>Proportional Gain (Kp)</h5>
+                <div class="w3-row-padding">
+                    <div class="w3-col s6 parameter-input">
+                        <label for="kp_min" class="w3-text-dark-grey">Min:</label>
+                        <input class="w3-input w3-border w3-round" type="number" step="0.01" id="kp_min" name="kp_min" 
+                               value="{{ request.form.kp_min if request.form.kp_min else '0.1' }}">
+                    </div>
+                    <div class="w3-col s6 parameter-input">
+                        <label for="kp_max" class="w3-text-dark-grey">Max:</label>
+                        <input class="w3-input w3-border w3-round" type="number" step="0.01" id="kp_max" name="kp_max" 
+                               value="{{ request.form.kp_max if request.form.kp_max else '10.0' }}">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="w3-col l6 m12 s12">
+                <h5>Integral Gain (Ki)</h5>
+                <div class="w3-row-padding">
+                    <div class="w3-col s6 parameter-input">
+                        <label for="ki_min" class="w3-text-dark-grey">Min:</label>
+                        <input class="w3-input w3-border w3-round" type="number" step="0.001" id="ki_min" name="ki_min" 
+                               value="{{ request.form.ki_min if request.form.ki_min else '0.01' }}">
+                    </div>
+                    <div class="w3-col s6 parameter-input">
+                        <label for="ki_max" class="w3-text-dark-grey">Max:</label>
+                        <input class="w3-input w3-border w3-round" type="number" step="0.001" id="ki_max" name="ki_max" 
+                               value="{{ request.form.ki_max if request.form.ki_max else '2.0' }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="w3-row-padding">
+            <div class="w3-col l6 m12 s12">
+                <h5>Derivative Gain (Kd)</h5>
+                <div class="w3-row-padding">
+                    <div class="w3-col s6 parameter-input">
+                        <label for="kd_min" class="w3-text-dark-grey">Min:</label>
+                        <input class="w3-input w3-border w3-round" type="number" step="0.001" id="kd_min" name="kd_min" 
+                               value="{{ request.form.kd_min if request.form.kd_min else '0.001' }}">
+                    </div>
+                    <div class="w3-col s6 parameter-input">
+                        <label for="kd_max" class="w3-text-dark-grey">Max:</label>
+                        <input class="w3-input w3-border w3-round" type="number" step="0.001" id="kd_max" name="kd_max" 
+                               value="{{ request.form.kd_max if request.form.kd_max else '1.0' }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="w3-button w3-orange w3-round-large w3-margin-top w3-large" type="submit">
+            🚀 Start Auto-Tuning Optimization
+        </button>
+    </form>
+</div>
+
+<!-- Optimization Results -->
+{% if optimization_results and success %}
+<div class="results-section">
+    {% if optimization_results.success %}
+    <div class="w3-container w3-card w3-white w3-round-large w3-margin-top">
+        <h3 class="w3-text-green">✅ Optimization Successful!</h3>
+        
+        <!-- Optimized Parameters -->
+        <div class="w3-row-padding w3-margin-top">
+            <div class="w3-col l4 m6 s12">
+                <div class="w3-panel w3-blue w3-round metric-card">
+                    <h4>Optimized Kp</h4>
+                    <p class="w3-xlarge">{{ optimization_results.optimized_params.kp }}</p>
+                </div>
+            </div>
+            <div class="w3-col l4 m6 s12">
+                <div class="w3-panel w3-green w3-round metric-card">
+                    <h4>Optimized Ki</h4>
+                    <p class="w3-xlarge">{{ optimization_results.optimized_params.ki }}</p>
+                </div>
+            </div>
+            <div class="w3-col l4 m6 s12">
+                <div class="w3-panel w3-orange w3-round metric-card">
+                    <h4>Optimized Kd</h4>
+                    <p class="w3-xlarge">{{ optimization_results.optimized_params.kd }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Performance Results -->
+        <h4>Achieved Performance</h4>
+        <div class="w3-row-padding">
+            <div class="w3-col l3 m6 s12">
+                <div class="w3-panel w3-light-blue w3-round">
+                    <p><b>Settling Time:</b> {{ optimization_results.performance.settling_time }}s</p>
+                </div>
+            </div>
+            <div class="w3-col l3 m6 s12">
+                <div class="w3-panel w3-light-green w3-round">
+                    <p><b>Overshoot:</b> {{ optimization_results.performance.overshoot }}%</p>
+                </div>
+            </div>
+            <div class="w3-col l3 m6 s12">
+                <div class="w3-panel w3-light-orange w3-round">
+                    <p><b>Steady State Error:</b> {{ optimization_results.performance.steady_state_error }}</p>
+                </div>
+            </div>
+            <div class="w3-col l3 m6 s12">
+                <div class="w3-panel w3-light-grey w3-round">
+                    <p><b>Iterations:</b> {{ optimization_results.iterations }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Test Optimized Parameters -->
+        <div class="w3-margin-top">
+            <a href="/pid?kp={{ optimization_results.optimized_params.kp }}&ki={{ optimization_results.optimized_params.ki }}&kd={{ optimization_results.optimized_params.kd }}" 
+               class="w3-button w3-purple w3-round-large">
+                📊 Test These Parameters
+            </a>
+        </div>
+    </div>
+    {% else %}
+    <div class="w3-container w3-card w3-white w3-round-large w3-margin-top">
+        <h3 class="w3-text-red">❌ Optimization Failed</h3>
+        <p>{{ optimization_results.error }}</p>
+        <p>Try adjusting your performance targets or parameter bounds and run the optimization again.</p>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+
+</body>
+</html>

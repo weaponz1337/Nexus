@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PID Tuning Tool - Nexus Control Systems</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .parameter-input { margin-bottom: 15px; }
+        .results-section { margin-top: 30px; }
+        .metric-card { margin: 10px 0; }
+        .chart-container { height: 400px; margin: 20px 0; }
+        .advanced-params { display: none; }
+        .toggle-btn { cursor: pointer; color: #2196F3; }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<div class="w3-card w3-white w3-round-large w3-margin-top w3-padding">
+    <h2>Nexus Control Systems – PID Tuning Tool</h2>
+    <div class="w3-bar w3-margin-top">
+        <a href="/" class="w3-bar-item w3-button w3-green w3-round-large w3-margin-right">Home</a>
+        <a href="/view" class="w3-bar-item w3-button w3-blue w3-round-large w3-margin-right">View Applications</a>
+        <a href="/applications" class="w3-bar-item w3-button w3-green w3-round-large w3-margin-right">Add New Application</a>
+        <a href="/tools" class="w3-bar-item w3-button w3-teal w3-round-large w3-margin-right">Tools Home</a>
+        <a href="/pid/optimize" class="w3-bar-item w3-button w3-orange w3-round-large">Auto-Tune</a>
+    </div>
+</div>
+
+<!-- Error Display -->
+{% if error %}
+<div class="w3-panel w3-red w3-round-large w3-margin-top">
+    <h3>Error</h3>
+    <p>{{ error }}</p>
+</div>
+{% endif %}
+
+<!-- PID Parameter Input Form -->
+<div class="w3-container w3-card w3-white w3-round-large w3-margin-top">
+    <h3>Manual PID Tuning</h3>
+    <p>Enter PID parameters to simulate controller performance:</p>
+    
+    <form action="/pid" method="post" class="w3-container">
+        <!-- Basic PID Parameters -->
+        <div class="w3-row-padding">
+            <div class="w3-col l4 m6 s12 parameter-input">
+                <label for="kp" class="w3-text-dark-grey"><b>Proportional Gain (Kp):</b></label>
+                <input class="w3-input w3-border w3-round" type="number" step="0.01" id="kp" name="kp" 
+                       value="{{ request.form.kp if request.form.kp else '1.0' }}" 
+                       min="0.01" max="100" required>
+                <small class="w3-text-grey">Range: 0.01 - 100</small>
+            </div>
+            
+            <div class="w3-col l4 m6 s12 parameter-input">
+                <label for="ki" class="w3-text-dark-grey"><b>Integral Gain (Ki):</b></label>
+                <input class="w3-input w3-border w3-round" type="number" step="0.001" id="ki" name="ki" 
+                       value="{{ request.form.ki if request.form.ki else '0.1' }}" 
+                       min="0.001" max="10" required>
+                <small class="w3-text-grey">Range: 0.001 - 10</small>
+            </div>
+            
+            <div class="w3-col l4 m6 s12 parameter-input">
+                <label for="kd" class="w3-text-dark-grey"><b>Derivative Gain (Kd):</b></label>
+                <input class="w3-input w3-border w3-round" type="number" step="0.001" id="kd" name="kd" 
+                       value="{{ request.form.kd if request.form.kd else '0.05' }}" 
+                       min="0.0" max="5" required>
+                <small class="w3-text-grey">Range: 0.0 - 5</small>
+            </div>
+        </div>
+        
+        <!-- Advanced Parameters Toggle -->
+        <p class="toggle-btn" onclick="toggleAdvanced()">
+            <span id="toggle-text">▶ Show Advanced System Parameters</span>
+        </p>
+        
+        <div id="advanced-params" class="advanced-params w3-row-padding">
+            <div class="w3-col l3 m6 s12 parameter-input">
+                <label for="process_gain" class="w3-text-dark-grey"><b>Process Gain:</b></label>
+                <input class="w3-input w3-border w3-round" type="number" step="0.1" id="process_gain" name="process_gain" 
+                       value="{{ request.form.process_gain if request.form.process_gain else '1.0' }}">
+            </div>
+            
+            <div class="w3-col l3 m6 s12 parameter-input">
+                <label for="dead_time" class="w3-text-dark-grey"><b>Dead Time (s):</b></label>
+                <input class="w3-input w3-border w3-round" type="number" step="0.1" id="dead_time" name="dead_time" 
+                       value="{{ request.form.dead_time if request.form.dead_time else '2.0' }}">
+            </div>
+            
+            <div class="w3-col l3 m6 s12 parameter-input">
+                <label for="time_constant" class="w3-text-dark-grey"><b>Time Constant (s):</b></label>
+                <input class="w3-input w3-border w3-round" type="number" step="0.1" id="time_constant" name="time_constant" 
+                       value="{{ request.form.time_constant if request.form.time_constant else '5.0' }}">
+            </div>
+            
+            <div class="w3-col l3 m6 s12 parameter-input">
+                <label for="setpoint" class="w3-text-dark-grey"><b>Setpoint:</b></label>
+                <input class="w3-input w3-border w3-round" type="number" step="0.1" id="setpoint" name="setpoint" 
+                       value="{{ request.form.setpoint if request.form.setpoint else '50.0' }}">
+            </div>
+        </div>
+        
+        <button class="w3-button w3-blue w3-round-large w3-margin-top" type="submit">
+            Simulate PID Response
+        </button>
+    </form>
+</div>
+
+<!-- Results Display -->
+{% if results and success %}
+<div class="results-section">
+    <!-- Performance Metrics -->
+    <div class="w3-container w3-card w3-white w3-round-large w3-margin-top">
+        <h3>Performance Metrics</h3>
+        <div class="w3-row-padding">
+            <div class="w3-col l3 m6 s12">
+                <div class="w3-panel w3-blue w3-round metric-card">
+                    <h4>Settling Time</h4>
+                    <p class="w3-xlarge">{{ results.performance_metrics.settling_time }}s</p>
+                </div>
+            </div>
+            <div class="w3-col l3 m6 s12">
+                <div class="w3-panel w3-green w3-round metric-card">
+                    <h4>Overshoot</h4>
+                    <p class="w3-xlarge">{{ results.performance_metrics.overshoot }}%</p>
+                </div>
+            </div>
+            <div class="w3-col l3 m6 s12">
+                <div class="w3-panel w3-orange w3-round metric-card">
+                    <h4>Steady State Error</h4>
+                    <p class="w3-xlarge">{{ results.performance_metrics.steady_state_error }}</p>
+                </div>
+            </div>
+            <div class="w3-col l3 m6 s12">
+                <div class="w3-panel w3-purple w3-round metric-card">
+                    <h4>Final PV</h4>
+                    <p class="w3-xlarge">{{ results.performance_metrics.final_pv }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Charts -->
+    <div class="w3-container w3-card w3-white w3-round-large w3-margin-top">
+        <h3>Simulation Results</h3>
+        <div class="chart-container">
+            <canvas id="pidChart"></canvas>
+        </div>
+    </div>
+    
+    <!-- System Parameters -->
+    <div class="w3-container w3-card w3-white w3-round-large w3-margin-top">
+        <h3>System Configuration</h3>
+        <div class="w3-row-padding">
+            <div class="w3-col l4 m6 s12">
+                <p><b>Process Gain:</b> {{ results.system_params.process_gain }}</p>
+            </div>
+            <div class="w3-col l4 m6 s12">
+                <p><b>Dead Time:</b> {{ results.system_params.dead_time }}s</p>
+            </div>
+            <div class="w3-col l4 m6 s12">
+                <p><b>Time Constant:</b> {{ results.system_params.time_constant }}s</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Chart.js configuration
+{% if results %}
+const ctx = document.getElementById('pidChart').getContext('2d');
+const chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {{ results.simulation_data.time | safe }},
+        datasets: [{
+            label: 'Process Variable (PV)',
+            data: {{ results.simulation_data.pv | safe }},
+            borderColor: 'rgb(75, 192, 192)',
+            backgroundColor: 'rgba(75, 192, 192, 0.1)',
+            tension: 0.1
+        }, {
+            label: 'Setpoint (SP)',
+            data: {{ results.simulation_data.setpoint | safe }},
+            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgba(255, 99, 132, 0.1)',
+            borderDash: [5, 5],
+            tension: 0.1
+        }, {
+            label: 'Control Variable (CV)',
+            data: {{ results.simulation_data.cv | safe }},
+            borderColor: 'rgb(54, 162, 235)',
+            backgroundColor: 'rgba(54, 162, 235, 0.1)',
+            tension: 0.1,
+            yAxisID: 'y1'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            x: {
+                display: true,
+                title: {
+                    display: true,
+                    text: 'Time (seconds)'
+                }
+            },
+            y: {
+                type: 'linear',
+                display: true,
+                position: 'left',
+                title: {
+                    display: true,
+                    text: 'Process Variable / Setpoint'
+                }
+            },
+            y1: {
+                type: 'linear',
+                display: true,
+                position: 'right',
+                title: {
+                    display: true,
+                    text: 'Control Variable'
+                },
+                grid: {
+                    drawOnChartArea: false,
+                }
+            }
+        },
+        plugins: {
+            title: {
+                display: true,
+                text: 'PID Controller Response'
+            },
+            legend: {
+                display: true
+            }
+        }
+    }
+});
+{% endif %}
+
+// Toggle advanced parameters
+function toggleAdvanced() {
+    const params = document.getElementById('advanced-params');
+    const toggleText = document.getElementById('toggle-text');
+    
+    if (params.style.display === 'none' || params.style.display === '') {
+        params.style.display = 'block';
+        toggleText.innerHTML = '▼ Hide Advanced System Parameters';
+    } else {
+        params.style.display = 'none';
+        toggleText.innerHTML = '▶ Show Advanced System Parameters';
+    }
+}
+</script>
+{% endif %}
+
+</body>
+</html>

@@ -6,26 +6,27 @@
   <meta name="description" content="Veteran-owned industrial automation firm delivering custom control systems and integration services in Kentucky.">
   <meta name="keywords" content="industrial automation, control systems, PLC programming, SCADA, system integration, Kentucky">
   <meta name="author" content="Nexus Control Systems">
-  
+
   <!-- Open Graph Meta Tags -->
   <meta property="og:title" content="Nexus Control Systems - Industrial Automation & Control Engineering">
   <meta property="og:description" content="Veteran-owned industrial automation firm delivering custom control systems and integration services.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://nexuscontrolsystems.com">
-  
+
   <title>Nexus Control Systems - Industrial Automation & Control Engineering</title>
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
   <style>
     html { scroll-behavior: smooth; }
-    body { 
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       line-height: 1.6;
     }
     .hero {
       background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-      color: white; 
-      padding: 100px 20px; 
+      color: white;
+      padding: 100px 20px;
       text-align: center;
       position: relative;
     }
@@ -76,9 +77,7 @@
       background: #1e3c72;
       transform: scale(1.1);
     }
-    .navbar-mobile {
-      display: none;
-    }
+    .navbar-mobile { display: none; }
     @media (max-width: 768px) {
       .navbar-desktop { display: none; }
       .navbar-mobile { display: block; }
@@ -95,6 +94,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <!-- Navigation Bar -->
@@ -105,7 +105,7 @@
     <a href="#contact" class="w3-bar-item w3-button">Contact</a>
     <a href="/tools" class="w3-bar-item w3-button">Tools</a>
   </nav>
-  
+
   <!-- Mobile Navigation -->
   <nav class="w3-bar w3-black navbar-mobile" role="navigation" aria-label="Mobile navigation">
     <button class="w3-bar-item w3-button w3-right" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu">☰</button>
@@ -134,11 +134,11 @@
       <div class="w3-row-padding">
         <div class="w3-col l6 m12">
           <p class="w3-large w3-text-grey">
-            As a veteran-owned industrial automation firm, we bring military precision and reliability to every project. 
+            As a veteran-owned industrial automation firm, we bring military precision and reliability to every project.
             Our expertise spans custom control systems, PLC programming, SCADA development, and seamless system integration.
           </p>
           <p class="w3-text-grey">
-            Located in Shepherdsville, Kentucky, we serve clients across the region with cutting-edge automation solutions 
+            Located in Shepherdsville, Kentucky, we serve clients across the region with cutting-edge automation solutions
             that enhance productivity, reduce downtime, and optimize operational efficiency.
           </p>
         </div>
@@ -204,36 +204,62 @@
     <div class="w3-content">
       <h2 class="w3-center w3-text-dark-grey w3-margin-bottom">Get In Touch</h2>
       <div class="w3-row-padding">
+
         <div class="w3-col l6 m12">
-          <form action="https://formsubmit.co/chris.lynch@nexuscontrolsystems.com" method="POST" class="w3-card-4 w3-light-grey w3-padding" aria-label="Contact form">
-            <input type="hidden" name="_captcha" value="false">
+
+          <form action="https://formsubmit.co/chris.lynch@nexuscontrolsystems.com" method="POST"
+                class="w3-card-4 w3-light-grey w3-padding" aria-label="Contact form">
+
+            <input type="hidden" name="_captcha" value="true">
             <input type="hidden" name="_next" value="https://nexuscontrolsystems.com/thank-you">
-            <input type="text" name="_honey" style="display:none">
-            
+            <input type="hidden" name="_subject" value="New message from NexusControlSystems.com">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_autoresponse" value="Thanks for reaching out. We received your message and will respond soon.">
+
+            <div style="position:absolute; left:-5000px;" aria-hidden="true">
+              <label for="website">Leave this field empty</label>
+              <input type="text" id="website" name="_honey" tabindex="-1" autocomplete="off">
+            </div>
+
+            <div style="position:absolute; left:-5000px;" aria-hidden="true">
+              <label for="faxonly">Do not fill this</label>
+              <input type="text" id="faxonly" name="faxonly" tabindex="-1" autocomplete="off">
+            </div>
+
             <div class="w3-margin-bottom">
               <label for="name" class="w3-text-dark-grey">Name *</label>
-              <input class="w3-input w3-border w3-round" type="text" name="name" id="name" required aria-required="true">
+              <input class="w3-input w3-border w3-round" type="text" name="name" id="name"
+                     required aria-required="true" minlength="2" autocomplete="name">
             </div>
-            
+
             <div class="w3-margin-bottom">
               <label for="email" class="w3-text-dark-grey">Email *</label>
-              <input class="w3-input w3-border w3-round" type="email" name="email" id="email" required aria-required="true">
+              <input class="w3-input w3-border w3-round" type="email" name="email" id="email"
+                     required aria-required="true" autocomplete="email">
             </div>
-            
+
             <div class="w3-margin-bottom">
               <label for="company" class="w3-text-dark-grey">Company</label>
-              <input class="w3-input w3-border w3-round" type="text" name="company" id="company">
+              <input class="w3-input w3-border w3-round" type="text" name="company" id="company" autocomplete="organization">
             </div>
-            
+
             <div class="w3-margin-bottom">
               <label for="message" class="w3-text-dark-grey">Message *</label>
-              <textarea class="w3-input w3-border w3-round" name="message" id="message" rows="5" required aria-required="true" placeholder="Tell us about your automation needs..."></textarea>
+              <textarea class="w3-input w3-border w3-round"
+                        name="message"
+                        id="message"
+                        rows="5"
+                        required
+                        aria-required="true"
+                        minlength="25"
+                        placeholder="Tell us about your automation needs..."></textarea>
             </div>
-            
+
             <button class="w3-button btn-primary w3-round w3-large" type="submit">Send Message</button>
           </form>
+
         </div>
-        
+
         <div class="w3-col l6 m12">
           <div class="w3-padding-large">
             <h3 class="w3-text-dark-grey">Contact Information</h3>
@@ -242,17 +268,17 @@
                 <strong>📧 Email:</strong><br>
                 <a href="mailto:chris.lynch@nexuscontrolsystems.com">chris.lynch@nexuscontrolsystems.com</a>
               </p>
-              
+
               <p class="w3-large">
                 <strong>📞 Phone:</strong><br>
                 <a href="tel:8025586356">(802) 558-6356</a>
               </p>
-              
+
               <p class="w3-large">
                 <strong>📍 Location:</strong><br>
                 <a href="https://maps.google.com/?q=Shepherdsville+KY+40165" target="_blank" rel="noopener">Shepherdsville, KY 40165</a>
               </p>
-              
+
               <p class="w3-large">
                 <strong>🕒 Business Hours:</strong><br>
                 Monday - Friday: 8:00 AM - 6:00 PM EST<br>
@@ -261,6 +287,7 @@
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </section>
@@ -282,7 +309,7 @@
         <div class="w3-col l4 m12">
           <h4>Connect With Us</h4>
           <p>
-            <a href="https://www.linkedin.com/in/chris-lynch-64570599/" target="_blank" rel="noopener" class="w3-text-light-grey w3-hover-text-white" aria-label="Visit our LinkedIn profile">LinkedIn</a> • 
+            <a href="https://www.linkedin.com/in/chris-lynch-64570599/" target="_blank" rel="noopener" class="w3-text-light-grey w3-hover-text-white" aria-label="Visit our LinkedIn profile">LinkedIn</a> •
             <a href="https://github.com/weaponz1337" target="_blank" rel="noopener" class="w3-text-light-grey w3-hover-text-white" aria-label="Visit our GitHub profile">GitHub</a>
           </p>
         </div>
@@ -296,18 +323,15 @@
   <button class="back-to-top" onclick="scrollToTop()" aria-label="Back to top" title="Back to top">↑</button>
 
   <script>
-    // Mobile menu toggle
     function toggleMobileMenu() {
       const menu = document.getElementById('mobile-menu');
       menu.classList.toggle('w3-hide');
     }
 
-    // Back to top functionality
     function scrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Show/hide back to top button
     window.addEventListener('scroll', function() {
       const backToTop = document.querySelector('.back-to-top');
       if (window.pageYOffset > 300) {
@@ -317,15 +341,26 @@
       }
     });
 
-    // Close mobile menu when clicking outside
     document.addEventListener('click', function(event) {
       const menu = document.getElementById('mobile-menu');
       const button = event.target.closest('button');
-      
       if (!button && !menu.contains(event.target)) {
         menu.classList.add('w3-hide');
       }
     });
+
+    (function () {
+      const form = document.querySelector('form[action*="formsubmit.co"]');
+      if (!form) return;
+
+      form.addEventListener('submit', function (e) {
+        const faxonly = document.getElementById('faxonly');
+        if (faxonly && faxonly.value.trim().length > 0) {
+          e.preventDefault();
+          return false;
+        }
+      });
+    })();
   </script>
 
 </body>

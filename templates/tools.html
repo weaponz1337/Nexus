@@ -1,25 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Tools</title>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-</head>
-<body class="w3-container w3-light-grey">
+{% extends "base_tools.html" %}
 
-    <div class="w3-card w3-white w3-round-large w3-margin-top w3-padding">
-        <h2>Nexus Control Systems – Tools</h2>
-        <p>Select a tool below:</p>
+{% block title %}Tools Home | Nexus{% endblock %}
 
-        <div class="w3-bar w3-margin-top">
-            <a href="/" class="w3-bar-item w3-button w3-green w3-round-large w3-margin-right">Home</a>
-            <a href="/add" class="w3-bar-item w3-button w3-green w3-round-large w3-margin-right">Add New Application</a>
-            <a href="/citation" class="w3-bar-item w3-button w3-teal w3-round-large w3-margin-right">APA Citation Tool</a>
-            <a href="/view" class="w3-bar-item w3-button w3-blue w3-round-large w3-margin-right">View Applications</a>
-            <a href="/pid" class="w3-bar-item w3-button w3-orange w3-round-large">Pid tuning</a>
+{% block content %}
+  <div class="w3-row-padding w3-margin-top">
+
+    <div class="w3-col l4 m6 s12 w3-margin-bottom">
+      <div class="w3-card w3-white w3-padding card">
+        <h3 class="w3-text-dark-grey">Job Application Tracker</h3>
+        <p class="subtle">Add applications, track status, and review your pipeline.</p>
+        <div class="w3-bar">
+          <a class="w3-button w3-green pill w3-margin-right" href="/add">Add New</a>
+          <a class="w3-button w3-blue pill" href="/view">View All</a>
         </div>
+      </div>
     </div>
 
-</body>
-</html>
+    <div class="w3-col l4 m6 s12 w3-margin-bottom">
+      <div class="w3-card w3-white w3-padding card">
+        <h3 class="w3-text-dark-grey">PID Tuning</h3>
+        <p class="subtle">Simulate response, view metrics, and auto tune parameters.</p>
+        <div class="w3-bar">
+          <a class="w3-button w3-orange pill w3-margin-right" href="/pid">Manual Tune</a>
+          <a class="w3-button w3-purple pill" href="/pid/optimize">Auto Tune</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="w3-col l4 m6 s12 w3-margin-bottom">
+      <div class="w3-card w3-white w3-padding card">
+        <h3 class="w3-text-dark-grey">Citation Generator</h3>
+        <p class="subtle">Generate an APA style citation from a URL.</p>
+        <a class="w3-button w3-teal pill" href="/citation">Open Tool</a>
+      </div>
+    </div>
+
+  </div>
+{% endblock %}

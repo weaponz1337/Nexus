@@ -1,35 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>APA Citation Generator</title>
-<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Tools</title>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-</head>
-<body>
-<div class="w3-card w3-white w3-round-large w3-margin-top w3-padding">
-        <h2>Nexus Control Systems – Tools</h2>
-        <p>Select a tool below:</p>
+{% extends "base_tools.html" %}
 
-        <div class="w3-bar w3-margin-top">
-           <a href="/" class="w3-bar-item w3-button w3-green w3-round-large w3-margin-right">Home</a>
-	    <a href="/view" class="w3-bar-item w3-button w3-blue w3-round-large w3-margin-right">View Applications</a>
-            <a href="/applications" class="w3-bar-item w3-button w3-green w3-round-large w3-margin-right">Add New Application</a>
-            <a href="/pid" class="w3-bar-item w3-button w3-orange w3-round-large">Pid tuning</a>
-            <a href="/tools" class="w3-bar-item w3-button w3-teal w3-round-large">Tools Home</a>
-        </div>
-    </div>
+{% block title %}Citation | Nexus{% endblock %}
 
-    <h2>APA Citation Tool</h2>
-    <form method="POST">
-        <label>Enter a URL:</label><br>
-        <input type="text" name="url" placeholder="https://example.com" size="60">
-        <button type="submit">Generate</button>
+{% block content %}
+<div class="w3-card w3-white w3-padding card w3-margin-top">
+    <h2>APA Citation Generator</h2>
+    <p class="subtle">Paste a URL and generate a citation.</p>
+
+    <form method="POST" class="w3-container w3-margin-top">
+        <p>
+            <label for="url">URL</label>
+            <input class="w3-input w3-border w3-round" type="text" id="url" name="url"
+                   placeholder="https://example.com" required>
+        </p>
+        <button class="w3-button w3-teal pill" type="submit">Generate</button>
     </form>
+
     {% if citation %}
-        <h3>Generated APA Citation:</h3>
-        <p>{{ citation }}</p>
+    <div class="w3-panel w3-light-grey w3-round-large w3-margin-top">
+        <h4 class="w3-margin-top">Generated Citation</h4>
+        <p style="word-break: break-word;">{{ citation }}</p>
+    </div>
     {% endif %}
-</body>
-</html>
+</div>
+{% endblock %}

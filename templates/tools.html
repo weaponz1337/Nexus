@@ -1,39 +1,104 @@
-{% extends "base_tools.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Nexus Tools{% endblock %}</title>
 
-{% block title %}Tools Home | Nexus{% endblock %}
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-{% block content %}
-  <div class="w3-row-padding w3-margin-top">
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f1f1f1;
+        }
 
-    <div class="w3-col l4 m6 s12 w3-margin-bottom">
-      <div class="w3-card w3-white w3-padding card">
-        <h3 class="w3-text-dark-grey">Job Application Tracker</h3>
-        <p class="subtle">Add applications, track status, and review your pipeline.</p>
-        <div class="w3-bar">
-          <a class="w3-button w3-green pill w3-margin-right" href="/add">Add New</a>
-          <a class="w3-button w3-blue pill" href="/view">View All</a>
+        .page-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .brand {
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .subtle {
+            opacity: 0.8;
+        }
+
+        .card {
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .pill {
+            border-radius: 999px;
+        }
+
+        .nav a {
+            margin-right: 10px;
+            margin-bottom: 8px;
+        }
+
+        footer {
+            opacity: 0.75;
+        }
+    </style>
+
+    {% block head_extra %}{% endblock %}
+</head>
+
+<body>
+
+<div class="page-wrap">
+
+    <!-- Header -->
+    <div class="w3-card w3-white w3-padding card w3-margin-top">
+        <div class="w3-row-padding w3-cell-row">
+            <div class="w3-cell w3-cell-middle">
+                <div class="brand w3-xlarge">Nexus Control Systems</div>
+                <div class="subtle">Engineering Tools</div>
+            </div>
+            <div class="w3-cell w3-cell-middle w3-right-align">
+                <a href="/" class="w3-button w3-black pill">Main Site</a>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <div class="w3-col l4 m6 s12 w3-margin-bottom">
-      <div class="w3-card w3-white w3-padding card">
-        <h3 class="w3-text-dark-grey">PID Tuning</h3>
-        <p class="subtle">Simulate response, view metrics, and auto tune parameters.</p>
-        <div class="w3-bar">
-          <a class="w3-button w3-orange pill w3-margin-right" href="/pid">Manual Tune</a>
-          <a class="w3-button w3-purple pill" href="/pid/optimize">Auto Tune</a>
+        <!-- Navigation -->
+        <div class="w3-bar nav w3-margin-top">
+            <a href="/tools" class="w3-bar-item w3-button w3-green pill">Tools Home</a>
+            <a href="/view" class="w3-bar-item w3-button w3-blue pill">Applications</a>
+            <a href="/citation" class="w3-bar-item w3-button w3-teal pill">Citation</a>
+            <a href="/pid" class="w3-bar-item w3-button w3-orange pill">PID Tuning</a>
         </div>
-      </div>
     </div>
 
-    <div class="w3-col l4 m6 s12 w3-margin-bottom">
-      <div class="w3-card w3-white w3-padding card">
-        <h3 class="w3-text-dark-grey">Citation Generator</h3>
-        <p class="subtle">Generate an APA style citation from a URL.</p>
-        <a class="w3-button w3-teal pill" href="/citation">Open Tool</a>
-      </div>
-    </div>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="w3-panel
+                    {% if category == 'success' %}w3-green{% else %}w3-red{% endif %}
+                    w3-round-large w3-margin-top">
+                    <p>{{ message }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
-  </div>
-{% endblock %}
+    <!-- Page Content -->
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <footer class="w3-center w3-small w3-margin-top w3-padding-16">
+        © 2025 Nexus Control Systems
+    </footer>
+
+</div>
+
+{% block scripts %}{% endblock %}
+
+</body>
+</html>
